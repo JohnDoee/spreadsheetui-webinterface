@@ -1,0 +1,28 @@
+<div style="width: 100vw; height: 46px;">
+  <div class="d-flex p-1">
+    <div>
+      <img src="assets/icons/favicon-96x96.png" style="width: 38px; height: 38px;">
+    </div>
+    <div>
+      <button *ngIf="autoUpdate" (click)="toggleAutoupdate()" type="button" class="btn btn-success">Autoupdate is on</button>
+      <button *ngIf="!autoUpdate" (click)="toggleAutoupdate()" type="button" class="btn btn-danger">Autoupdate is off</button>
+    </div>
+    <div class="flex-grow-1"></div>
+    <div *ngIf="torrentStats">
+      <span>
+        Total torrents: <b>{{ torrentStats['total_torrents'] }}</b> /
+        Total size: <b>{{ torrentStats['total_size'] }}</b> /
+        Total uploaded: <b>{{ torrentStats['total_uploaded'] }}</b> /
+        Upload rate: <b>{{ torrentStats['total_upload_rate'] }}</b> /
+        Download rate: <b>{{ torrentStats['total_download_rate'] }}</b>
+      </span>
+    </div>
+  </div>
+</div>
+<ag-grid-angular
+  style="width: 100vw; height: calc(100vh - 46px);"
+  class="ag-theme-balham"
+  [gridOptions]="gridOptions"
+  (gridReady)="onGridReady($event)"
+  >
+</ag-grid-angular>
