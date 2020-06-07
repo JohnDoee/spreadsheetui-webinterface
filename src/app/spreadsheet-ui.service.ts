@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-class Torrent {
+export class Torrent {
   constructor(
     public id: number,
     public name: string,
@@ -41,11 +41,62 @@ class Torrent {
   }
 }
 
+export class TorrentClient {
+  constructor(
+    public id: number,
+    public name: string,
+    public display_name: string,
+  ) { }
+
+  static fromData(data: object): TorrentClient {
+    return new TorrentClient(
+      data['id'],
+      data['name'],
+      data['display_name'],
+    )
+  }
+}
+
+export class Job {
+  constructor(
+    public id: number,
+    public action: string,
+    public torrent: string | null,
+    public sourceClient: string | null,
+    public targetClient: string | null,
+    public canExecute: boolean,
+    public executeStartTime: Date,
+  ) { }
+
+  static fromData(data: object): Job {
+    return new Job(
+      data['id'],
+      data['action'],
+      data['torrent'],
+      data['source_client'],
+      data['target_client'],
+      data['can_execute'],
+      new Date(data['execute_start_time']),
+    )
+  }
+}
+
+export class AddJob {
+  constructor(
+    public action: string,
+    public torrent?: number,
+    public target_client?: number,
+    public config?: object,
+  ) { }
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class SpreadsheetUIService {
-  private urlTorrents = '/api/torrents/';;
+  private urlTorrents = '/api/torrents/';
+  private urlTorrentClients = '/api/torrentclients/';
+  private urlJobs = '/api/jobs/';
 
   constructor(private http: HttpClient) { }
 
@@ -68,7 +119,74 @@ export class SpreadsheetUIService {
     )
   }
 
-  getTorrentStats() {
-    return this.http.get(`${this.urlTorrents}stats/`);
+  getTorrentAggregated(filterParams: object) {
+    let params = new HttpParams();
+    for (let key in filterParams) {
+      params = params.set(key, filterParams[key]);
+    }
+    return this.http.get(`${this.urlTorrents}aggregated/`, { params });
+
+  }
+
+  getTorrentClients(offset: number, limit: number, filterParams: object): Observable<{ clients: Array<TorrentClient>, count: number }> {
+    let params = new HttpParams()
+      .set('limit', limit.toString())
+      .set('offset', offset.toString());
+
+    for (let key in filterParams) {
+      params = params.set(key, filterParams[key]);
+    }
+
+    return this.http.get(this.urlTorrentClients, { params }).pipe(
+      map(r => {
+        return {
+          clients: r['results'].map(t => TorrentClient.fromData(t)),
+          count: r['count']
+        }
+      })
+    )
+  }
+
+  getJobs(offset: number, limit: number, filterParams: object): Observable<{ jobs: Array<Job>, count: number }> {
+    let params = new HttpParams()
+      .set('limit', limit.toString())
+      .set('offset', offset.toString());
+
+    for (let key in filterParams) {
+      params = params.set(key, filterParams[key]);
+    }
+
+    return this.http.get(this.urlJobs, { params }).pipe(
+      map(r => {
+        return {
+          jobs: r['results'].map(t => Job.fromData(t)),
+          count: r['count']
+        }
+      })
+    )
+  }
+
+  submitJobs(jobs: Array<AddJob>) {
+    return this.http.post(`${ this.urlJobs }submit_actions/`, jobs);
+  }
+
+  wipeAllJobs() {
+    return this.http.post(`${ this.urlJobs }wipe_all_actions/`, {});
+  }
+
+  executeAllJobs() {
+    return this.http.post(`${ this.urlJobs }execute_all_jobs/`, {});
+  }
+
+  scheduleFullUpdate() {
+    return this.http.post(`${ this.urlTorrents }schedule_full_update/`, {});
+  }
+
+  setTheme(theme: string) {
+    localStorage.setItem('themeClass', theme);
+  }
+
+  getTheme() {
+    return localStorage.getItem('themeClass') || 'ag-theme-balham';
   }
 }
