@@ -5,7 +5,7 @@
   [ngClass]="themeClass"
   [gridOptions]="torrentGridOptions"
   (gridReady)="onTorrentGridReady($event)"
-  [agContextMenu]="torrentMenu"
+  [contextMenu]="torrentMenu"
   >
 </ag-grid-angular>
 
@@ -22,48 +22,48 @@
 </ag-grid-angular>
 
 
-<ag-context-menu [menuClass]="themeClass" #torrentMenu>
-  <ng-template agContextMenuItem [iconTemplate]="scheduleFullUpdateIcon" [visible]="true" (execute)="scheduleFullUpdate()">
+<context-menu [menuClass]="themeClass" #torrentMenu>
+  <ng-template contextMenuItem [iconTemplate]="scheduleFullUpdateIcon" [visible]="true" (execute)="scheduleFullUpdate()">
     Run full update
   </ng-template>
 
-  <ng-template agContextMenuItem [divider]="true"></ng-template>
+  <ng-template contextMenuItem [divider]="true"></ng-template>
 
-  <ng-template agContextMenuItem [iconTemplate]="startIcon" [visible]="true" (execute)="startTorrents(selectedTorrents)">
+  <ng-template contextMenuItem [iconTemplate]="startIcon" [visible]="true" (execute)="startTorrents(selectedTorrents)">
     Start {{ selectedTorrents.length }} torrent<span *ngIf="selectedTorrents.length != 1">s</span>
   </ng-template>
-  <ng-template agContextMenuItem [iconTemplate]="stopIcon" [visible]="true" (execute)="stopTorrents(selectedTorrents)">
+  <ng-template contextMenuItem [iconTemplate]="stopIcon" [visible]="true" (execute)="stopTorrents(selectedTorrents)">
     Stop {{ selectedTorrents.length }} torrent<span *ngIf="selectedTorrents.length != 1">s</span>
   </ng-template>
-  <ng-template agContextMenuItem [iconTemplate]="removeIcon" [visible]="true" (execute)="removeTorrents(selectedTorrents)">
+  <ng-template contextMenuItem [iconTemplate]="removeIcon" [visible]="true" (execute)="removeTorrents(selectedTorrents)">
     Remove {{ selectedTorrents.length }} torrent<span *ngIf="selectedTorrents.length != 1">s</span>
   </ng-template>
-  <ng-template agContextMenuItem [iconTemplate]="moveIcon" [visible]="true" [subMenu]="torrentMoveMenu">
+  <ng-template contextMenuItem [iconTemplate]="moveIcon" [visible]="true" [subMenu]="torrentMoveMenu">
     Move {{ selectedTorrents.length }} torrent<span *ngIf="selectedTorrents.length != 1">s</span> to
   </ng-template>
-  <ag-context-menu [menuClass]="themeClass" #torrentMoveMenu>
-    <ng-template agContextMenuItem [visible]="true" *ngFor="let client of torrentClients$ | async" (execute)="moveTorrents(selectedTorrents, client)">
+  <context-menu [menuClass]="themeClass" #torrentMoveMenu>
+    <ng-template contextMenuItem [visible]="true" *ngFor="let client of torrentClients$ | async" (execute)="moveTorrents(selectedTorrents, client)">
       {{ client.display_name }}
     </ng-template>
-  </ag-context-menu>
+  </context-menu>
 
-  <ng-template agContextMenuItem [divider]="true"></ng-template>
+  <ng-template contextMenuItem [divider]="true"></ng-template>
 
-  <ng-template agContextMenuItem [iconTemplate]="jobqueueIcon" [visible]="true" (execute)="openJobqueue()">
+  <ng-template contextMenuItem [iconTemplate]="jobqueueIcon" [visible]="true" (execute)="openJobqueue()">
     Goto Jobqueue
   </ng-template>
 
-  <ng-template agContextMenuItem [divider]="true"></ng-template>
+  <ng-template contextMenuItem [divider]="true"></ng-template>
 
-  <ng-template agContextMenuItem [iconTemplate]="themeIcon" [visible]="true" [subMenu]="torrentThemeMenu">
+  <ng-template contextMenuItem [iconTemplate]="themeIcon" [visible]="true" [subMenu]="torrentThemeMenu">
     Change theme
   </ng-template>
-  <ag-context-menu [menuClass]="themeClass" #torrentThemeMenu>
-    <ng-template agContextMenuItem [visible]="true" *ngFor="let theme of gridThemes" (execute)="setTheme(theme.themeClass)">
+  <context-menu [menuClass]="themeClass" #torrentThemeMenu>
+    <ng-template contextMenuItem [visible]="true" *ngFor="let theme of gridThemes" (execute)="setTheme(theme.themeClass)">
       {{ theme.displayName }}
     </ng-template>
-  </ag-context-menu>
-</ag-context-menu>
+  </context-menu>
+</context-menu>
 
 <ng-template #scheduleFullUpdateIcon>
   <fa-icon [icon]="iconScheduleFullUpdate"></fa-icon>

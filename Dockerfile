@@ -1,4 +1,4 @@
-FROM node:12 as build
+FROM node:16 as build
 
 WORKDIR /app
 
@@ -9,4 +9,4 @@ RUN npm install
 COPY src/ /app/src/
 COPY *.json /app/
 
-RUN npm run build -- --base-href "/static/spreadsheetui/" --prod --output-path=/dist/spreadsheetui/
+RUN npm run build -- --configuration production --output-path=/dist/spreadsheetui/

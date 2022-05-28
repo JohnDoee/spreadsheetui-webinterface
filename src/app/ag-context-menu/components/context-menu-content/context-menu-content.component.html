@@ -1,0 +1,85 @@
+<!-- <div class="ngx-contextmenu" [ngClass]="menuClass" [attr.dir]="dir">
+  <ul
+    #menu
+    class="ngx-contextmenu--dropdown-menu"
+    role="menu"
+    aria-labelledby="menubutton"
+    tabindex="0"
+  >
+    <li
+      #li
+      *ngFor="let menuDirective of menuDirectives; let i = index"
+      [class.disabled]="isMenuItemDisabled(menuDirective)"
+      [class.divider]="menuDirective.divider"
+      [class.active]="menuDirective.isActive && !isMenuItemDisabled(menuDirective)"
+      [attr.role]="menuDirective.divider ? 'separator' : undefined"
+      role="none"
+    >
+      <hr *ngIf="menuDirective.divider" role="separator" />
+      <button
+        *ngIf="!menuDirective.divider && !menuDirective.passive"
+        type="button"
+        role="menuitem"
+        class="ngx-contextmenu--item-content"
+        [attr.aria-haspopup]="!!menuDirective.subMenu"
+        [class.ngx-contextmenu--parent-menu]="!!menuDirective.subMenu"
+        [class.active]="menuDirective.isActive && !isMenuItemDisabled(menuDirective)"
+        [class.disabled]="isMenuItemDisabled(menuDirective)"
+        [attr.disabled]="isMenuItemDisabled(menuDirective) ? 'disabled' : null"
+        (click)="onMenuItemSelect(menuDirective, $event)"
+        (mouseenter)="onOpenSubMenu(menuDirective, $event)"
+      >
+        <ng-template
+          [ngTemplateOutlet]="menuDirective.template"
+          [ngTemplateOutletContext]="{ $implicit: value }"
+        ></ng-template>
+      </button>
+
+      <span
+        *ngIf="!menuDirective.divider && menuDirective.passive"
+        class="ngx-contextmenu--item-content ngx-contextmenu--item-content-passive"
+        role="menuitem"
+        (click)="stopEvent($event)"
+        (contextmenu)="stopEvent($event)"
+        [class.disabled]="isMenuItemDisabled(menuDirective)"
+      >
+        <ng-template
+          [ngTemplateOutlet]="menuDirective.template"
+          [ngTemplateOutletContext]="{ $implicit: value }"
+        ></ng-template>
+      </span>
+    </li>
+  </ul>
+</div> -->
+
+<div class="ag-popup" [ngClass]="menuClass" tabindex="0">
+  <div class="ag-menu ag-popup-child" style="position: static;">
+    <div #menu class="ag-menu-list" tabindex="0">
+      <ng-container *ngFor="let menuItem of menuDirectives; let i = index">
+        <div #entry class="ag-menu-separator" *ngIf="menuItem.divider">
+          <span class="ag-menu-separator-cell"></span>
+          <span class="ag-menu-separator-cell"></span>
+          <span class="ag-menu-separator-cell"></span>
+          <span class="ag-menu-separator-cell"></span>
+        </div>
+        <div #entry *ngIf="!menuItem.divider"
+            [class.ag-menu-option-disabled]="isMenuItemDisabled(menuItem)"
+            (click)="onMenuItemSelect(menuItem, $event)" (mouseenter)="onOpenSubMenu(menuItem, $event)"
+            class="ag-menu-option" context-menu-hover="ag-menu-option-active">
+          <span class="ag-menu-option-icon ag-menu-option-part">
+            <ng-template
+              *ngIf="menuItem.iconTemplate"
+              [ngTemplateOutlet]="menuItem.iconTemplate"
+              [ngTemplateOutletContext]="{ $implicit: value }">
+            </ng-template>
+          </span>
+          <span class="ag-menu-option-text ag-menu-option-part">
+            <ng-template [ngTemplateOutlet]="menuItem.template" [ngTemplateOutletContext]="{ $implicit: value }"></ng-template>
+          </span>
+          <span class="ag-menu-option-shortcut ag-menu-option-part"></span>
+          <span class="ag-menu-option-popup-pointer ag-menu-option-part"><span class="ag-icon ag-icon-small-right" *ngIf="!!menuItem.subMenu"></span></span>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

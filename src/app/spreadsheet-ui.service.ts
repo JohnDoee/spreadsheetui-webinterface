@@ -21,7 +21,7 @@ export class Torrent {
     public added: Date,
   ) { }
 
-  static fromData(data: object): Torrent {
+  static fromData(data: any): Torrent {
     return new Torrent(
       data['id'],
       data['name'],
@@ -48,7 +48,7 @@ export class TorrentClient {
     public display_name: string,
   ) { }
 
-  static fromData(data: object): TorrentClient {
+  static fromData(data: any): TorrentClient {
     return new TorrentClient(
       data['id'],
       data['name'],
@@ -68,7 +68,7 @@ export class Job {
     public executeStartTime: Date,
   ) { }
 
-  static fromData(data: object): Job {
+  static fromData(data: any): Job {
     return new Job(
       data['id'],
       data['action'],
@@ -100,7 +100,7 @@ export class SpreadsheetUIService {
 
   constructor(private http: HttpClient) { }
 
-  getTorrents(offset: number, limit: number, filterParams: object): Observable<{ torrents: Array<Torrent>, count: number }> {
+  getTorrents(offset: number, limit: number, filterParams: any): Observable<{ torrents: Array<Torrent>, count: number }> {
     let params = new HttpParams()
       .set('limit', limit.toString())
       .set('offset', offset.toString());
@@ -119,7 +119,7 @@ export class SpreadsheetUIService {
     )
   }
 
-  getTorrentAggregated(filterParams: object) {
+  getTorrentAggregated(filterParams: any) {
     let params = new HttpParams();
     for (let key in filterParams) {
       params = params.set(key, filterParams[key]);
@@ -128,7 +128,7 @@ export class SpreadsheetUIService {
 
   }
 
-  getTorrentClients(offset: number, limit: number, filterParams: object): Observable<{ clients: Array<TorrentClient>, count: number }> {
+  getTorrentClients(offset: number, limit: number, filterParams: any): Observable<{ clients: Array<TorrentClient>, count: number }> {
     let params = new HttpParams()
       .set('limit', limit.toString())
       .set('offset', offset.toString());
@@ -147,7 +147,7 @@ export class SpreadsheetUIService {
     )
   }
 
-  getJobs(offset: number, limit: number, filterParams: object): Observable<{ jobs: Array<Job>, count: number }> {
+  getJobs(offset: number, limit: number, filterParams: any): Observable<{ jobs: Array<Job>, count: number }> {
     let params = new HttpParams()
       .set('limit', limit.toString())
       .set('offset', offset.toString());

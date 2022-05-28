@@ -7,6 +7,8 @@
 @import "~ag-grid-community/src/styles/ag-theme-material/sass/ag-theme-material-mixin.scss";
 @import '~ngx-toastr/toastr';
 
+@import '@angular/cdk/overlay-prebuilt.css';
+
 .ag-theme-alpine {
   @include ag-theme-alpine();
 }

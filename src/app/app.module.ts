@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { OverlayModule } from '@angular/cdk/overlay';
 
 import { AgGridModule } from 'ag-grid-angular';
-import { AgContextMenuModule } from './ag-context-menu';
+import { ContextMenuModule } from './ag-context-menu';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -26,7 +26,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     BrowserModule,
     HttpClientModule,
     OverlayModule,
-    AgContextMenuModule.forRoot({}),
+    ContextMenuModule,
     AgGridModule.withComponents([
       CheckboxFilterComponent,
     ]),

@@ -1,1 +1,1 @@
-export { AgContextMenuModule } from './ag-context-menu.module';
+export { ContextMenuModule } from './ngx-contextmenu.module';

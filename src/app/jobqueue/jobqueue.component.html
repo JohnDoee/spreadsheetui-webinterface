@@ -4,22 +4,22 @@
   [ngClass]="themeClass"
   [gridOptions]="jobqueueGridOptions"
   (gridReady)="onJobqueueGridReady($event)"
-  [agContextMenu]="jobqueueMenu"
+  [contextMenu]="jobqueueMenu"
   >
 </ag-grid-angular>
 
-<ag-context-menu [menuClass]="themeClass" #jobqueueMenu>
-  <ng-template agContextMenuItem [iconTemplate]="executeIcon" [visible]="true" (execute)="executeAllJobs()">
+<context-menu [menuClass]="themeClass" #jobqueueMenu>
+  <ng-template contextMenuItem [iconTemplate]="executeIcon" [visible]="true" (execute)="executeAllJobs()">
     Execute queued jobs
   </ng-template>
-  <ng-template agContextMenuItem [iconTemplate]="removeIcon" [visible]="true" (execute)="removeAllJobs()">
+  <ng-template contextMenuItem [iconTemplate]="removeIcon" [visible]="true" (execute)="removeAllJobs()">
     Remove all jobs
   </ng-template>
-  <ng-template agContextMenuItem [divider]="true"></ng-template>
-  <ng-template agContextMenuItem [iconTemplate]="dashboardIcon" [visible]="true" (execute)="openDashboard()">
+  <ng-template contextMenuItem [divider]="true"></ng-template>
+  <ng-template contextMenuItem [iconTemplate]="dashboardIcon" [visible]="true" (execute)="openDashboard()">
     Goto Dashboard
   </ng-template>
-</ag-context-menu>
+</context-menu>
 
 <ng-template #executeIcon>
   <fa-icon [icon]="iconExecute"></fa-icon>

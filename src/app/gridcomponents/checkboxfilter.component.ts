@@ -15,7 +15,7 @@ import { GridOptions, IGetRowsParams } from "ag-grid-community";
   <div class="ag-menu-header ag-tabs-header" style="height: 0px; visibility: hidden;">
     <!--- Spacer item --->
   </div>
-  <div>
+  <div style="width: 208px;">
   <div class="ag-filter-body-wrapper ag-simple-filter-body-wrapper">
     <div>
     <ag-grid-angular
@@ -33,7 +33,7 @@ import { GridOptions, IGetRowsParams } from "ag-grid-community";
 })
 export class CheckboxFilterComponent implements IFilterAngularComp, OnDestroy {
   private params: IFilterParams;
-  private valueGetter: (rowNode: RowNode) => any;
+  private valueGetter: any;
   public gridApi: any;
   public themeClass = 'ag-theme-balham';
   public modelData: string[] = null;
@@ -64,7 +64,7 @@ export class CheckboxFilterComponent implements IFilterAngularComp, OnDestroy {
   }
 
   agInit(params: IFilterParams): void {
-    this.themeClass = params.api['gridCore']['eGridDiv']['className'];
+    this.themeClass = params.api['focusService']['eGridDiv']['className'];
     this.params = params;
     this.valueGetter = params.valueGetter;
     let choices = params['choices'];

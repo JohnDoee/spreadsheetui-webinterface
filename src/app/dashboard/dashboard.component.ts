@@ -9,6 +9,7 @@ import { GridOptions, IGetRowsParams, GridApi } from 'ag-grid-community';
 import { faPlay, faStop, faLayerGroup, faEraser, faPeopleCarry, faEye, faSync } from '@fortawesome/free-solid-svg-icons';
 
 import * as filesize from 'filesize';
+import * as dayjs from 'dayjs';
 
 import { SpreadsheetUIService, Torrent, AddJob, TorrentClient } from '../spreadsheet-ui.service';
 
@@ -158,9 +159,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
         headerName: 'Added',
         field: 'added',
         sortable: true,
+        sort: 'desc',
         width: 150,
         suppressSizeToFit: true,
-        valueFormatter: (params) => params.value !== undefined && params.value.toISOString().split('.')[0] || ''
+        valueFormatter: (params) => params.value !== undefined && dayjs(params.value).format('YYYY-MM-DD HH:mm:ss') || ''
       },
       {
         headerName: 'Label',
@@ -172,7 +174,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       {
         headerName: 'Client',
         field: 'torrent_client',
-        width: 130,
+        width: 160,
         suppressSizeToFit: true,
         floatingFilter: true,
         filter: 'checkboxFilter',
@@ -186,7 +188,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     this.torrentGridOptions = <GridOptions>{
       rowModelType: 'infinite',
+      blockLoadDebounceMillis: 200,
+      maxBlocksInCache: 2,
       columnDefs: columnDefs,
+      sortingOrder: ['desc', 'asc', null],
       defaultColDef: {
         resizable: true
       },
@@ -194,7 +199,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       onGridSizeChanged: () => {
         this.torrentGridOptions.api.sizeColumnsToFit();
       },
-      frameworkComponents: {
+      components: {
         checkboxFilter: CheckboxFilterComponent,
       },
       alignedGrids: [],
@@ -235,7 +240,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   onTorrentGridReady(params: any) {
     this.torrentGridApi = params.api;
-    params.api.setSortModel([{ colId: 'added', sort: 'desc' }]);
+    // params.api.setSortModel([{ colId: 'added', sort: 'desc' }]);
     params.api.setDatasource({
       getRows: this.getRows.bind(this)
     });
